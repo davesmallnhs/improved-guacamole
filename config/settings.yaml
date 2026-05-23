@@ -1,0 +1,56 @@
+# ============================================================
+# AI Trading Bot — Configuration
+# ============================================================
+
+# ---- Trading 212 settings ----------------------------------
+trading212:
+  demo: true          # true = demo account (no real money)
+  paper_trading: true # true = log orders but don't submit them
+
+# ---- Instruments to trade ----------------------------------
+# t212_ticker: exact ticker string used by Trading 212 API
+# yf_ticker:   Yahoo Finance ticker for market data & indicators
+instruments:
+  - t212_ticker: "AAPL_US_EQ"
+    yf_ticker: "AAPL"
+  - t212_ticker: "MSFT_US_EQ"
+    yf_ticker: "MSFT"
+  - t212_ticker: "NVDA_US_EQ"
+    yf_ticker: "NVDA"
+  - t212_ticker: "TSLA_US_EQ"
+    yf_ticker: "TSLA"
+
+# ---- AI model settings -------------------------------------
+model:
+  # type: ml | llm | hybrid
+  type: "ml"
+
+  # ML / Hybrid: minimum confidence to emit a BUY or SELL
+  min_confidence: 0.58
+
+  # ML / Hybrid: path to save/load trained model weights
+  # (leave blank to retrain from scratch every run — not recommended for production)
+  model_path: "data/model.pkl"
+
+  # Hybrid / LLM: OpenAI model name
+  llm_model_name: "gpt-4o-mini"
+
+  # Hybrid: require LLM to agree with ML signal
+  require_llm_agreement: true
+
+# ---- Risk controls -----------------------------------------
+risk:
+  max_trade_value: 500        # max £/$ per single order
+  max_open_positions: 5       # max simultaneously held instruments
+  max_daily_loss: 150         # bot pauses if daily loss exceeds this
+  stop_loss_pct: 0.05         # 5% drop from entry triggers sell
+  cooldown_minutes: 60        # minimum minutes between trades per ticker
+
+# ---- Schedule (used with --schedule flag) ------------------
+schedule_minutes: 15
+
+# ---- Data persistence --------------------------------------
+db_path: "data/market_data.db"
+
+# ---- Trade log ---------------------------------------------
+trade_log_path: "trades.csv"
